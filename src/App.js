@@ -4,7 +4,6 @@ import mockNasaData from "./mockNasaData";
 const App = () => {
 
   const [nasaData, setNasaData] = useState(mockNasaData)
-  console.log("mock data", nasaData)
 
   const apiKey = process.env.REACT_APP_NASA_API_KEY
 

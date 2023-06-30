@@ -8,37 +8,45 @@
 
 - API key: a way to track who is consuming the API
 
-## matching fetch happen
-- locate an API website
+## Making Fetch Happen
+
+### API that does not require an API Key
+1. locate an API website
   - website: https://api.chucknorris.io/
-- read documentation to acquire the data you want from the API
+2. read documentation to acquire the data you want from the API
   - endpoint that I am using is the random joke
-    - https://api.chucknorris.io/jokes/random
+  - https://api.chucknorris.io/jokes/random
 ```js
   fetch("https://api.chucknorris.io/jokes/random")
-    .then(response => console.log(response.json()))
+    .then(response => response.json())
+    .then(payload => console.log(payload))
+    .catch(error => console.log(error))
 ```
-
+3. Assign payload as the value of the state variable
+- `.then(payload => setChuckFacts(payload))`
+4. Reference variable to display data on the UI 
 - conditional rendering
 ```js
-// with logical operator
-{chuckFacts && }
+  // with logical AND operator
+  {chuckFacts && }
 
-// with the ternary ?
-chuckFacts?
+  // with the ternary operator ?
+  chuckFacts?
 ```
 
-## API key
-### .env
-- create `.env` 
-- store the API key in a variable using the following naming convention `REACT_APP_NASA_API_KEY`
-- place `.env` in the .gitignore
+### API key
+
+### .env configuration
+- Create `.env` file at root of application
+- Store the API key in a variable using the following naming convention `REACT_APP_NASA_API_KEY`
+- Place `.env` in the .gitignore
+
 ### App.js
-- reference the api key in a variable using the process.env.REACT_APP_NASA_API_KEY
+- Reference the api key in a variable using `process.env.REACT_APP_NASA_API_KEY`
 
-- website https://api.nasa.gov/
-
-- make sure you are referencing the correct key for the data you want
+- website: https://api.nasa.gov/
+- Generate account to get API key
+- Make sure you are referencing the correct key for the data you want from the API
 ```js
   return(
     <>
@@ -47,8 +55,17 @@ chuckFacts?
         Click to see images from NASA spacecraft
       </button>
       {nasaData && 
-        <img src={nasaData.photos[0].img_src} alt={`image provided by {nasaData.photos[0].rover.name}`}/>
+        <img 
+          src={nasaData.photos[0].img_src} 
+          alt={`image provided by {nasaData.photos[0].rover.name}`}
+        />
       }
     </>
   )
 ```
+
+### Reference API within the endpoint
+- `"https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&page=2&api_key=DEMO_KEY"`
+- Replace DEMO_KEY with the variable storing the api key
+- ensure the .env is stored within the .gitignore
+- ensure the API key is not stored in the README
