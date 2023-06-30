@@ -1,70 +1,71 @@
-# Getting Started with Create React App
+## External API 6/29/23 Charlie
+- Application Programming Interface (API) 
+- fetch: allows for an asynchronous method to request data from the API
+- promise: 
+  - pending: action has not occurred yet
+  - fulfilled: successful response, status code and payload
+  - rejected: failure, status code and error message
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+- API key: a way to track who is consuming the API
 
-## Available Scripts
+## Making Fetch Happen
 
-In the project directory, you can run:
+### API that does not require an API Key
+1. locate an API website
+  - website: https://api.chucknorris.io/
+2. read documentation to acquire the data you want from the API
+  - endpoint that I am using is the random joke
+  - https://api.chucknorris.io/jokes/random
+```js
+  fetch("https://api.chucknorris.io/jokes/random")
+    .then(response => response.json())
+    .then(payload => console.log(payload))
+    .catch(error => console.log(error))
+```
+3. Assign payload as the value of the state variable
+- `.then(payload => setChuckFacts(payload))`
+4. Reference variable to display data on the UI 
+- conditional rendering
+```js
+  // with logical AND operator
+  {chuckFacts && }
 
-### `yarn start`
+  // with the ternary operator ?
+  chuckFacts?
+```
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### API key
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### .env configuration
+- Create `.env` file at root of application
+- Store the API key in a variable using the following naming convention `REACT_APP_NASA_API_KEY`
+- Place `.env` in the .gitignore
 
-### `yarn test`
+### App.js
+- Reference the api key in a variable using `process.env.REACT_APP_NASA_API_KEY`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- website: https://api.nasa.gov/
+- Generate account to get API key
+- Make sure you are referencing the correct key for the data you want from the API
+```js
+  return(
+    <>
+      <h1>NASA API</h1>
+      <button onClick={displayPhotos}>
+        Click to see images from NASA spacecraft
+      </button>
+      {nasaData && 
+        <img 
+          src={nasaData.photos[0].img_src} 
+          alt={`image provided by {nasaData.photos[0].rover.name}`}
+        />
+      }
+    </>
+  )
+```
 
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+### Reference API within the endpoint
+- `"https://api.nasa.gov/mars-photos/api/v1/rovers/curiosity/photos?sol=1000&page=2&api_key=DEMO_KEY"`
+- Replace DEMO_KEY with the variable storing the api key
+- ensure the .env is stored within the .gitignore
+- ensure the API key is not stored in the README
